@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Indian Radio</title>
+</head>
+
+<body>
+  <div id="app">
+    <!-- Dashboard Screen -->
+    <div id="dashboard" class="screen active">
+      <!-- Featured Section -->
+      <div class="section-header">
+        <h2>Featured</h2>
+      </div>
+      <div id="featured-carousel" class="featured-carousel">
+        <!-- Featured cards injected here -->
+      </div>
+
+      <!-- Search & All Stations -->
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="search-input" class="search-input" placeholder="Search stations, genres...">
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2>All Stations</h2>
+      </div>
+      <div id="station-list" class="station-list compact">
+        <!-- Stations injected here -->
+      </div>
+    </div>
+
+    <!-- Player Screen -->
+    <div id="player" class="screen hidden">
+      <!-- Hero Album Art -->
+      <div class="hero-art-container">
+        <div id="album-art" class="hero-art">
+          <span class="live-badge">🔴 LIVE</span>
+        </div>
+      </div>
+
+      <!-- Track Info -->
+      <div class="player-info">
+        <div class="track-details">
+          <h1 id="player-track-title">Midnight City</h1>
+          <p id="player-track-artist">M83 • Deep House Radio</p>
+        </div>
+      </div>
+
+      <!-- Playback Controls -->
+      <div class="playback-controls">
+        <button id="back-btn" class="control-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button id="play-pause-btn" class="control-btn play-btn-large">
+          <span id="play-icon">▶</span>
+          <span id="pause-icon" style="display:none;">⏸</span>
+          <div id="spinner" class="spinner" style="display:none;"></div>
+        </button>
+      </div>
+
+      <!-- AirPlay Button -->
+      <button id="airplay-btn" class="airplay-btn">
+        📡 AirPlay & Bluetooth
+      </button>
+    </div>
+  </div>
+
+  <div id="mini-player" class="mini-player hidden">
+    <div class="mini-progress-bar">
+      <div id="mini-progress" class="mini-progress" style="width: 0%"></div>
+    </div>
+    <div class="mini-content">
+      <div id="mini-icon" class="mini-icon"></div>
+      <div class="mini-text">
+        <h4 id="mini-station-name">Station Name</h4>
+        <p id="mini-status">Playing</p>
+      </div>
+      <div class="mini-controls">
+        <button id="mini-play-btn" class="btn mini-play-btn">▶</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
