@@ -59,7 +59,7 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
 
         setCurrentStation(station);
         setMetadata({}); // Reset metadata
-        player.play(station.slug, station.imageUrl);
+        player.play(station.slug, station.imageUrl, station.name);
         setIsPlaying(true);
     };
 

@@ -1,3 +1,11 @@
+import { registerPlugin } from '@capacitor/core';
+
+interface SharedDataPlugin {
+    saveData(options: { title: string; artist: string; imageUrl: string; isPlaying: boolean }): Promise<void>;
+}
+
+const SharedData = registerPlugin<SharedDataPlugin>('SharedDataPlugin');
+
 export class PlayerService {
     private audio: HTMLAudioElement;
     private eventSource: EventSource | null = null;
@@ -7,7 +15,7 @@ export class PlayerService {
         this.audio = new Audio();
         this.audio.autoplay = true;
 
-        // Enable background audio playback support if possible via MediaSession (web standard, works in Capacitor)
+        // Enable background audio playback support if possible via MediaSession
         if ('mediaSession' in navigator) {
             this.audio.addEventListener('play', () => {
                 navigator.mediaSession.playbackState = 'playing';
@@ -19,20 +27,24 @@ export class PlayerService {
     }
 
     private currentImageUrl: string | null = null;
+    private currentStationName: string = "Radio";
 
-    play(stationSlugs: string, imageUrl?: string) {
+    async play(stationSlugs: string, imageUrl?: string, stationName?: string) {
         this.currentImageUrl = imageUrl || null;
+        this.currentStationName = stationName || "Radio";
+
         if (this.eventSource) {
             this.eventSource.close();
             this.eventSource = null;
         }
 
-        // Direct stream URL - browsers handle redirects
+        // Direct stream URL
         const streamUrl = `https://stream.zeno.fm/${stationSlugs}`;
         this.audio.src = streamUrl;
         this.audio.play().catch(e => console.error("Playback failed:", e));
 
         this.subscribeMetadata(stationSlugs);
+        this.updateWidget(this.currentStationName, "Live", true);
     }
 
     stop() {
@@ -42,13 +54,16 @@ export class PlayerService {
             this.eventSource.close();
             this.eventSource = null;
         }
+        this.updateWidget("Indian Radio", "Tap to Play", false);
     }
 
     toggle() {
         if (this.audio.paused) {
             this.audio.play();
+            this.updateWidget(this.currentStationName, "Live", true);
         } else {
             this.audio.pause();
+            this.updateWidget(this.currentStationName, "Paused", false);
         }
     }
 
@@ -87,6 +102,11 @@ export class PlayerService {
                         this.onMetadataChange(data);
                     }
                     this.updateMediaSession(data);
+
+                    // Update Widget with metadata
+                    if (data.streamTitle) {
+                        this.updateWidget(data.streamTitle, data.artist || this.currentStationName, !this.audio.paused);
+                    }
                 } catch (e) {
                     console.error("Error parsing metadata", e);
                 }
@@ -94,7 +114,6 @@ export class PlayerService {
 
             this.eventSource.onerror = (err) => {
                 console.warn("SSE Error", err);
-                // Optional: Reconnect logic could go here
             };
         } catch (e) {
             console.error("Failed to setup SSE", e);
@@ -111,6 +130,19 @@ export class PlayerService {
                     { src: this.currentImageUrl, sizes: '512x512', type: 'image/png' }
                 ] : []
             });
+        }
+    }
+
+    private async updateWidget(title: string, artist: string, isPlaying: boolean) {
+        try {
+            await SharedData.saveData({
+                title: title,
+                artist: artist,
+                imageUrl: this.currentImageUrl || "",
+                isPlaying: isPlaying
+            });
+        } catch (e) {
+            console.warn("Widget update failed (probably web env)", e);
         }
     }
 }
