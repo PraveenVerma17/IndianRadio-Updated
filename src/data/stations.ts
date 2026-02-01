@@ -65,6 +65,30 @@ export const stations: Station[] = [
         genre: 'Pop'
     },
     {
+        id: 'kishore-kumar-hits',
+        name: 'Kishore Kumar Hits',
+        slug: '0ghtfp8ztm0uv',
+        description: 'Kishore Kumar\'s greatest hits.',
+        imageUrl: '/assets/kishore_kumar_hits.png',
+        genre: 'Classic'
+    },
+    {
+        id: 'kumar-sanu-hits',
+        name: 'Kumar Sanu Hits',
+        slug: 'xpp502dr97zuv',
+        description: 'Kumar Sanu\'s greatest hits.',
+        imageUrl: '/assets/kumar_sanu_hits.png',
+        genre: 'Classic'
+    },
+    {
+        id: 'lata-mangeshkar-hits',
+        name: 'Lata Mangeshkar Hits',
+        slug: 'xe1ye67prfhvv',
+        description: 'Lata Mangeshkar\'s greatest hits.',
+        imageUrl: '/assets/lata_mangeshkar_hits.png',
+        genre: 'Classic'
+    },
+    {
         id: 'bhakti-sangeet',
         name: 'Bhakti Sangeet',
         slug: 'r51n9k1vsa0uv',
